@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* 防止按钮跑出屏幕产生滚动条 */
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            width: 380px;
+            transition: all 0.5s ease;
+        }
+
+        /* 熊熊和图标的动画 */
+        .bear-icon {
+            font-size: 60px;
+            display: inline-block;
+            animation: bounce 2s infinite ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            /* 这种 cubic-bezier 会让缩放看起来更 bouncy */
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
+            z-index: 10;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        #noBtn {
+            background-color: #f0f0f0;
+            color: #888;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .hidden { display: none; }
+
+        #successCard h1 { color: #ff4d6d; }
+        #successCard p { color: #666; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainCard">
+        <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 20px;">
+    <img src="bruno-kathy.jpg" 
+         alt="Our Memory" 
+         style="max-width: 100%; height: auto; border-radius: 15px;"
+         onerror="console.error('图片加载失败，请检查文件名是否正确');">
+</div>
+
+        <div class="bear-icon">🍰🌊🎈</div>
+        
+        <h1>
+            From Bruno and Kathy,<br>
+            You’re invited to celebrate another year of us!<br>
+            Will you be able to attend?<br>
+            It will be Feb 28th (Saturday).
+        </h1>
+        
+        <div class="buttons-wrapper">
+            <button class="btn" id="yesBtn" onclick="celebrate()">Yes</button>
+            <button class="btn" id="noBtn" onmouseover="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="successCard">
+        <div class="bear-icon">🥰</div>
+        <h1>Yay! I knew it! ✌🏻👬🏻🍸</h1>
+        <p>Looking forward to seeing you!</p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+
+        function moveButton() {
+            // 第一次触发时改为 fixed，让它脱离卡片容器到处跑
+            if (noBtn.style.position !== 'fixed') {
+                noBtn.style.position = 'fixed';
+            }
+
+            // 计算逃跑范围（四周留出 100px 边距，防止跑得太边边缘）
+            const padding = 100;
+            const maxWidth = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxHeight = window.innerHeight - noBtn.offsetHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxWidth));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxHeight));
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function celebrate() {
+            // 隐藏旧卡片，显示成功卡片
+            document.getElementById('mainCard').style.display = 'none';
+            document.getElementById('successCard').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
